@@ -1,6 +1,7 @@
 FROM node:12.19.0-slim
 
 RUN npm install -g @vue/cli
+RUN npm install -g @vue/cli-service
 
 RUN mkdir /app
 
@@ -12,6 +13,4 @@ RUN npm install
 
 EXPOSE 8080
 
-COPY . .
-
-CMD ["npm", "run", "serve"]
+ADD . .

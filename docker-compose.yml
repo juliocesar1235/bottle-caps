@@ -18,7 +18,8 @@ services:
       - db
   app:
     build: ./app
+    command: npm run serve
     volumes:
-      - ./app:/app
+      - ./app/src:/app/src
     ports:
       - "8080:8080"
