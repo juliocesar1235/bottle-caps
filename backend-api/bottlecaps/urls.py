@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.authtoken.views import obtain_auth_token
+
+from bottlecaps import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('home/', views.HomeView.as_view(), name='home'),
+    path('login/', obtain_auth_token, name='login'),
 ]
