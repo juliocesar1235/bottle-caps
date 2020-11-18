@@ -1,6 +1,6 @@
 <template>
-  <div :class="[width, height]" class="mb-8 mr-6 shadow-lg">
-    <img class="w-full" :src="url" alt="Game cover">
+  <div :class="[width, height]" class="shadow-lg">
+    <img class="w-full" :src="url" :alt="altText">
   </div>
 </template>
 
@@ -18,6 +18,11 @@ export default {
       type: String,
       required: false,
       default: "h-41"
+    },
+    altText: {
+      type: String,
+      required: false,
+      default: "Game cover"
     }
   }
 }
