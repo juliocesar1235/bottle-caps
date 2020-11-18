@@ -1,6 +1,6 @@
 <template>
-  <div :class="[width, height]" class="mb-8 mr-6 rounded overflow-hidden shadow-lg">
-    <img class="w-full" :src="url" alt="Vue logo">
+  <div :class="[width, height]" class="mb-8 mr-6 shadow-lg">
+    <img class="w-full" :src="url" alt="Game cover">
   </div>
 </template>
 
