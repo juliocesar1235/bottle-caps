@@ -1,6 +1,7 @@
 <template>
   <div
     class="w-full max-w-md p-4 mt-24 ml-auto mr-auto bg-white shadow-lg">
+    <form>
       <BaseInput 
         class="mb-4"
         label="Username"
@@ -14,8 +15,11 @@
         type="password"/>
       <div class="flex items-center justify-between">
         <BaseButton>Login</BaseButton>
-        <BaseButton flat="true">Create account</BaseButton>
+        <router-link :to="{name: 'signup'}">
+          <BaseButton :flat="true">Create account</BaseButton>
+        </router-link>
       </div>
+    </form>
   </div>
 </template>
 
@@ -25,12 +29,9 @@ import BaseButton from "@/components/Base/BaseButton.vue"
 
 export default {
   name: "Login",
-    components: {
+  components: {
     BaseInput,
     BaseButton
-  },
-  mounted() {
-    console.log(this.$store.getters.getUser)
   },
   data() {
     return {
