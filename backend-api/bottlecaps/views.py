@@ -1,10 +1,26 @@
-from django.http import Http404
+from rest_framework import permissions
 from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 from .models import *
+
+
+class CreateUserView(CreateAPIView):
+    model = User
+    permission_classes = [
+        permissions.AllowAny # Let anonymous users register
+    ]
+    serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        token, _ = Token.objects.get_or_create(user=serializer.instance)
+        return Response({'token': token.key}, status=status.HTTP_201_CREATED)
 
 
 class TitleList(APIView):
@@ -31,7 +47,7 @@ class TitleView(APIView):
         try:
             return Title.objects.get(id=key)
         except Title.DoesNotExist:
-            raise Http404
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, key):
         title = self.get_object(key)
@@ -78,7 +94,7 @@ class ReviewView(APIView):
         try:
             return Review.objects.get(id=key)
         except Review.DoesNotExist:
-            raise Http404
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, key):
         review = self.get_object(key)

@@ -1,13 +1,19 @@
 from rest_framework import serializers
-from .models import Profile, Category, Title, Review 
+from .models import User, Category, Title, Review 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(source='user.first_name')
-    last_name = serializers.CharField(source='user.last_name')
-    email = serializers.CharField(source='user.email')
+
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profile
-        fields = ['first_name', 'last_name', 'email']
+        model = User
+        fields = ['id', 'username', 'password']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password']
+        )
+        return user
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
