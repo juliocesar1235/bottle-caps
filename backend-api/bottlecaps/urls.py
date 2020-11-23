@@ -22,6 +22,7 @@ from bottlecaps import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', obtain_auth_token, name='login'),
+    path('signup/', views.CreateUserView.as_view(), name='sign_up'),
     path('titles/', views.TitleList.as_view(), name='titles'),
     path('title/<int:key>/', views.TitleView.as_view(), name='title'),
     path('reviews/', views.ReviewList.as_view(), name='reviews'),
