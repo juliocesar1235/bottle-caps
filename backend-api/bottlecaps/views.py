@@ -29,7 +29,7 @@ class TitleList(APIView):
     """
     def get(self, request):
         titles = Title.objects.all()
-        serialized_titles = TitleSerializer(titles, many=True)
+        serialized_titles = TitleShortSerializer(titles, many=True)
         return Response(serialized_titles.data)
 
     def post(self, request):

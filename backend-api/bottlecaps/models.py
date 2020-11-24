@@ -33,6 +33,7 @@ class Title(models.Model):
     cover_image_path = models.URLField(max_length=255, null=True, blank=True)
     user_score = models.DecimalField(max_digits=3, decimal_places=2, null=False)
     user_review_count = models.PositiveIntegerField(null=False, blank=False)
+    featured = models.BooleanField(default=False)
     category = models.ManyToManyField(Category, related_name='titles')
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     last_updated_at = models.DateTimeField(auto_now=True, null=False, blank=False)

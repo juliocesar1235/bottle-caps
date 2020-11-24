@@ -14,7 +14,7 @@
         v-model:value="password"
         type="password"/>
       <div class="flex items-center justify-between">
-        <BaseButton>Login</BaseButton>
+        <BaseButton @click="login">Login</BaseButton>
         <router-link :to="{name: 'signup'}">
           <BaseButton :flat="true">Create account</BaseButton>
         </router-link>
@@ -37,6 +37,12 @@ export default {
     return {
       username: "",
       password: ""
+    }
+  },
+  methods: {
+    async login() {
+      const data = await this.$store.dispatch('login', {"username": this.username, "password": this.password})
+      if (!data.error) this.$router.push({name: 'home'})
     }
   }
 };
