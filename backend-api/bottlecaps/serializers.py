@@ -20,10 +20,17 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name']
 
+
 class TitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Title
-        fields = ['id', 'name', 'synopsis', 'cover_image_path', 'user_score', 'user_review_count', 'created_at', 'last_updated_at']
+        fields = ['id', 'name', 'synopsis', 'cover_image_path', 'featured', 'user_score', 'user_review_count', 'created_at', 'last_updated_at']
+
+
+class TitleShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Title
+        fields = ['id', 'name', 'cover_image_path', 'featured']
 
 
 class ReviewSerializer(serializers.ModelSerializer):

@@ -40,8 +40,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
-  let isAuthenticated = store.getters.getLogged
+  let isAuthenticated = store.getters.isAuthenticated
   if (to.name !== 'login' && to.name !== 'signup' && !isAuthenticated) next({ name: 'login' })
+  else if ((to.name === 'login' || to.name === 'signup') && isAuthenticated) next({ name: 'home' })
   else next()
   pageTitle(to)
 })

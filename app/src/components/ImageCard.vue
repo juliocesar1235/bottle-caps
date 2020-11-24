@@ -1,6 +1,10 @@
 <template>
-  <div :class="[width, height]" class="shadow-lg">
-    <img class="w-full" :src="url" :alt="altText">
+  <div 
+    class="object-cover object-center shadow-lg">
+    <img
+      class="object-cover object-center w-full h-full"
+      :src="url"
+      :alt="altText">
   </div>
 </template>
 
@@ -9,16 +13,6 @@ export default {
   name: "ImageCard",
   props: {
     url: String,
-    width: {
-      type: String,
-      required: false,
-      default: "w-40"
-    },
-    height: {
-      type: String,
-      required: false,
-      default: "h-41"
-    },
     altText: {
       type: String,
       required: false,
