@@ -6,7 +6,8 @@ export default createStore({
   state: {
     user: {},
     isAuthenticated: localStorage.getItem('token') ? true : false,
-    titles: []
+    titles: [],
+    currentTitle: {}
   },
   mutations: { // sync
     setUser(state, payload) {
@@ -17,6 +18,9 @@ export default createStore({
     },
     setTitles(state, payload) {
       state.titles = payload
+    },
+    setCurrentTitle(state, payload) {
+      state.currentTitle = payload
     }
   },
   actions: { // async
@@ -53,12 +57,30 @@ export default createStore({
       } else {
         return {error: "Something wrong happened. Please try again later!"}
       }
+    },
+    async fetchTitle(state, id) {
+      const options = {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        },
+      }
+      const res = await fetch(`${url}/title/${id}/`, options)
+      if(res.ok) {
+        const title = await res.json()
+        state.commit('setCurrentTitle', title)
+        return {}
+      } else {
+        return {error: "Something wrong happened. Please try again later!"}
+      }
     }
   },
   modules: {},
   getters: {
     getUser: state => state.user,
     isAuthenticated: state => state.isAuthenticated,
-    getTitles: state => state.titles
+    getTitles: state => state.titles,
+    getCurrentTitle: state => state.currentTitle
   }
 });

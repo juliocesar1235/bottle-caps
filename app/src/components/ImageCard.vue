@@ -1,8 +1,8 @@
 <template>
   <div 
-    class="object-cover object-center shadow-lg">
+    class="inline-block shadow-lg">
     <img
-      class="object-cover object-center w-full h-full"
+      class="inline-block object-cover object-center w-full h-full"
       :src="url"
       :alt="altText">
   </div>

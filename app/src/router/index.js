@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Signup from "../views/Signup.vue";
 import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
+import Title from "../views/Title.vue";
 import store from '../store'
 
 const routes = [
@@ -22,6 +23,11 @@ const routes = [
     name: "home",
     component: Home,
     meta: {title: 'Bottlecaps'}
+  },
+  {
+    path: "/title/:id",
+    name: "title",
+    component: Title,
   }
 ];
 

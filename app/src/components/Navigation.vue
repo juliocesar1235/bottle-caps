@@ -1,6 +1,6 @@
 <template>
   <nav class="flex items-center justify-between px-8 py-2 bg-gray-800">
-    <p class="text-3xl text-gray-100">Bottle Caps</p>
+    <router-link :to="{name: 'home'}" class="text-3xl text-gray-100">Bottle Caps</router-link>
     <div v-if="logged" class="text-gray-100">
       <router-link @click="logout" :to="{name:'login'}">
         Logout
