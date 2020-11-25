@@ -1,8 +1,11 @@
 <template>
-  <Navigation />
+  <header>
+    <Navigation />
+  </header>
   <main class="h-full bg-gray-100">
     <router-view/>
   </main>
+  <footer class="bg-gray-100"></footer>
 </template>
 
 <script>
@@ -24,8 +27,8 @@ html, body, #app {
 
 #app {
   display: grid;
-  grid-template-areas: "nav" "main";
-  grid-template-rows: 4rem 1fr;
+  grid-template-areas: "nav" "main" "footer";
+  grid-template-rows: 4rem 1fr 4rem;
 }
 
 </style>

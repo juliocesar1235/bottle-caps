@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     buttonStyle() {
-      const commonClass = "px-4 py-2 border border-${this.color}-500"
+      const commonClass = `px-4 py-2 border border-${this.color}-500`
       if (this.ghost) {
         return `${commonClass} hover:bg-${this.color}-500 text-${this.color}-500 hover:text-white`  
       } else if (this.flat) {

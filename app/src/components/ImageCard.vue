@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="inline-block shadow-lg">
+    class="inline-block shadow-md">
     <img
       class="inline-block object-cover object-center w-full h-full"
       :src="url"
