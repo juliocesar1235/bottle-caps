@@ -1,3 +1,4 @@
+import random
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
@@ -52,15 +53,19 @@ class TitleView(APIView):
     def get(self, request, key):
         title = self.get_object(key)
         serialized_title = TitleSerializer(title)
-        return Response(serialized_title.data)
-
-    def put(self, request, key):
-        title = self.get_object(key)
-        serialized_title = TitleSerializer(title, data=request.data)
-        if serialized_title.is_valid():
-            serialized_title.save()
-            return Response(serialized_title.data)
-        return Response(serialized_title.errors, status=status.HTTP_400_BAD_REQUEST)
+        related_titles = Title.objects.filter(category__in=title.category.all()).exclude(id=title.id).order_by('?')
+        serialized_related_titles = TitleShortSerializer(related_titles, many=True).data
+        serialized_related_titles = serialized_related_titles[:2] if len(serialized_related_titles) > 1 else serialized_related_titles
+        title_obj = {}
+        try:
+            reviewed = Review.objects.get(user=request.user, title=title)
+            title_obj["reviewed"] = reviewed is not None
+        except Review.DoesNotExist:
+            title_obj["reviewed"] = False
+        
+        title_obj.update(serialized_title.data)
+        title_obj["related_titles"] = serialized_related_titles
+        return Response(title_obj)
 
     def delete(self, request, key):
         title = self.get_object(key)
@@ -79,8 +84,8 @@ class ReviewList(APIView):
 
     def post(self, request):
         serialized_review = ReviewSerializer(data=request.data)
-        title = Title.objects.get(id=request.data['title'])
         if serialized_review.is_valid():
+            title = Title.objects.get(id=int(request.data['title']))
             serialized_review.save(user=request.user, title=title)
             return Response(serialized_review.data, status=status.HTTP_201_CREATED)
         return Response(serialized_review.errors, status=status.HTTP_400_BAD_REQUEST)

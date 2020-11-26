@@ -43,6 +43,9 @@ class Title(models.Model):
 
 
 class Review(models.Model):
+    class Meta:
+        unique_together = ['user', 'title']
+
     heading = models.CharField(max_length=100, null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
     rating = models.PositiveSmallIntegerField(null=False, blank=False)

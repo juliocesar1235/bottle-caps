@@ -15,6 +15,14 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class ReviewSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(source='user.username', read_only=True, required=False)
+    class Meta:
+        model = Review
+        fields = ['heading', 'comment', 'rating', 'author', 'title', 'created_at', 'last_updated_at']
+        
+
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -22,9 +30,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class TitleSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, required=False, read_only=True)
+
     class Meta:
         model = Title
-        fields = ['id', 'name', 'synopsis', 'cover_image_path', 'featured', 'user_score', 'user_review_count', 'created_at', 'last_updated_at']
+        fields = ['id', 'name', 'synopsis', 'cover_image_path', 'featured', 'user_score', 'user_review_count', 'reviews','created_at', 'last_updated_at']
 
 
 class TitleShortSerializer(serializers.ModelSerializer):
@@ -33,7 +43,4 @@ class TitleShortSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'cover_image_path', 'featured']
 
 
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Review
-        fields = ['heading', 'comment', 'rating', 'created_at', 'last_updated_at']
+
