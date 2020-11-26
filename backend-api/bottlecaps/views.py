@@ -83,9 +83,9 @@ class ReviewList(APIView):
         return Response(serialized_reviews.data)
 
     def post(self, request):
-        title = Title.objects.get(id=request.data['title'])
         serialized_review = ReviewSerializer(data=request.data)
         if serialized_review.is_valid():
+            title = Title.objects.get(id=int(request.data['title']))
             serialized_review.save(user=request.user, title=title)
             return Response(serialized_review.data, status=status.HTTP_201_CREATED)
         return Response(serialized_review.errors, status=status.HTTP_400_BAD_REQUEST)

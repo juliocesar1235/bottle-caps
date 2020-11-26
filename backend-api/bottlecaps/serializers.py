@@ -16,10 +16,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='user.username', read_only=True)
+    author = serializers.CharField(source='user.username', read_only=True, required=False)
     class Meta:
         model = Review
-        fields = ['heading', 'comment', 'rating', 'author', 'created_at', 'last_updated_at']
+        fields = ['heading', 'comment', 'rating', 'author', 'title', 'created_at', 'last_updated_at']
+        
 
 
 class CategorySerializer(serializers.ModelSerializer):

@@ -74,6 +74,23 @@ export default createStore({
       } else {
         return {error: "Something wrong happened. Please try again later!"}
       }
+    },
+    async postReview(_, payload) {
+      const options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(payload)
+      }
+      const res = await fetch(`${url}/reviews/`, options)
+      if(res.ok) {
+        return await res.json()
+      } else {
+        return {error: "Something wrong happened. Please try again later!"}
+      }
     }
   },
   modules: {},

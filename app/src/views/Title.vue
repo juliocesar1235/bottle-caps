@@ -14,8 +14,13 @@
         class="mb-4"
         label="Content"
         placeholder="This is a great game because..."
-        v-model:value="review.content"
+        v-model:value="review.comment"
         :rows="6"/>
+      <BaseSelect
+        class="mb-4"
+        label="Rating"
+        v-model:value="review.rating"
+        :options="options"/>
     </form>
   </template>
   <template v-slot:actions>
@@ -38,6 +43,11 @@
       <div class="flex items-end justify-between w-full">
         <div>
           <h2 class="text-2xl">User score</h2>
+          <star-rating
+            :rating="Number(title.user_score)"
+            :increment="0.25"
+            :read-only="true"
+            :star-points="[23, 2, 14, 17, 0, 19, 10, 34, 7, 50, 23, 43, 38, 50, 36, 34, 46, 19, 31, 17]"/>
         </div>
         <BaseButton
           v-if="!title.reviewed"
@@ -83,10 +93,12 @@
 <script>
 import BaseButton from '@/components/Base/BaseButton.vue'
 import BaseInput from '@/components/Base/BaseInput.vue'
+import BaseSelect from '@/components/Base/BaseSelect.vue'
 import BaseTextarea from '@/components/Base/BaseTextarea.vue'
 import ImageCard from '@/components/ImageCard.vue'
 import ReviewCard from '@/components/ReviewCard.vue'
 import Modal from '@/components/Modal.vue'
+import StarRating from 'vue-star-rating'
 
 export default {
   name: "Title",
@@ -96,21 +108,32 @@ export default {
     BaseButton,
     BaseInput,
     BaseTextarea,
-    Modal
+    BaseSelect,
+    Modal,
+    StarRating
   },
   data() {
     return {
       reviewing: false,
       review: {
         heading: "",
-        content: "",
-        rating: 0
-      },
+        comment: "",
+        rating: 0,
+        title: this.$route.params.id
+      }
     }
   },
   computed: {
     title() {
       return this.$store.getters.getCurrentTitle
+    },
+    options() {
+      let o = []
+      o.push({id: 0, value: "", label: 'Rate this game'})
+      for(let i = 1; i <= 5; i++) {
+        o.push({id: i, value: i, label: `${i} stars`})
+      }
+      return o
     }
   },
   mounted() {
@@ -121,8 +144,14 @@ export default {
     next()
   },
   methods: {
-    publish() {
-      console.log("Publish: ", this.review)
+    async publish() {
+      const data = await this.$store.dispatch('postReview', this.review)
+      if(!data.error) {
+        this.reviewing = false
+        let currentTitle = JSON.parse(JSON.stringify(this.$store.getters.getCurrentTitle))
+        currentTitle.reviews.push(data)
+        this.$store.commit('setCurrentTitle', currentTitle)
+      }
     }
   }
 }
