@@ -41,6 +41,23 @@ export default createStore({
         return {error: "Wrong credentials"}
       }
     },
+    async signup(state, payload) {
+      const options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      }
+      const res = await fetch(`${url}/signup/`, options)
+      if(res.ok) {
+        const token = await res.json()
+        state.commit('setIsAuthenticated', true)
+        localStorage.setItem('token', token.token)
+        return {}
+      } else {
+        return {error: "Wrong credentials"}
+      }
+    },
     async fetchTitles(state) {
       const options = {
         mode: 'cors',

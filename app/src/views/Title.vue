@@ -149,7 +149,7 @@ export default {
       if(!data.error) {
         this.reviewing = false
         let currentTitle = JSON.parse(JSON.stringify(this.$store.getters.getCurrentTitle))
-        currentTitle.reviews.push(data)
+        currentTitle.reviews.unshift(data)
         this.$store.commit('setCurrentTitle', currentTitle)
       }
     }

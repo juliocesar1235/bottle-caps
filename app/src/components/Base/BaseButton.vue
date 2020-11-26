@@ -38,6 +38,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 </style>

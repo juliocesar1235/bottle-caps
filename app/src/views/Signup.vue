@@ -9,6 +9,11 @@
           v-model:value="username"/>
         <BaseInput 
           class="mb-4"
+          label="Email"
+          placeholder="email@bottlecaps.com"
+          v-model:value="email"/>
+        <BaseInput 
+          class="mb-4"
           label="Password"
           placeholder="Password"
           v-model:value="password"
@@ -23,7 +28,9 @@
           <router-link :to="{name: 'login'}">
             <BaseButton :flat="true">Back to login</BaseButton>
           </router-link>
-          <BaseButton>Create account</BaseButton>
+          <BaseButton
+            @click="signup"
+            :disabled="invalidPassword || invalidUsername || invalidEmail">Create account</BaseButton>
         </div>
       </form>
   </div>
@@ -42,13 +49,26 @@ export default {
   data() {
     return {
       username: "",
+      email: "",
       password: "",
       confirmPassword: ""
     }
   },
   computed: {
-    validPassword() {
-      return this.password === this.confirmPassword
+    invalidPassword() {
+      return (this.password === "" || (this.password !== this.confirmPassword))
+    },
+    invalidUsername() {
+      return this.username === ""
+    },
+    invalidEmail() {
+      return this.email === ""
+    }
+  },
+  methods: {
+    async signup() {
+      const data = await this.$store.dispatch('signup', {"username": this.username, "email": this.email, "password": this.password})
+      if (!data.error) this.$router.push({name: 'home'})
     }
   }
 }
