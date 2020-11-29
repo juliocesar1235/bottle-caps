@@ -24,11 +24,17 @@
     </form>
   </template>
   <template v-slot:actions>
-    <BaseButton
-      @click="publish">Publish</BaseButton>
+    <div class="flex justify-between w-full">
+      <BaseButton
+        color="red"
+        flat="true"
+        @click="_ => {resetReview(); reviewing = false}">Cancel</BaseButton>
+      <BaseButton
+        @click="publish">Publish</BaseButton>
+    </div>
   </template>
 </Modal>
-<section class="max-w-screen-xl px-4 mb-8 ml-auto mr-auto">
+<section class="px-4 mb-8 ml-auto mr-auto max-w-screen-xl">
   <h1 class="mt-4 mb-4 text-3xl text-gray-800">{{ title.name }}</h1>
   <section class="flex flex-col mb-8 md:flex-row">
     <ImageCard
@@ -59,7 +65,7 @@
   <section class="flex flex-col justify-between md:flex-row">
     <div class="w-full mb-8 md:w-1/2 lg:w-3/4 lg:mr-0 md:mb-0 md:mr-4">
       <h2 class="mb-4 text-2xl">Reviews</h2>
-      <div class="grid grid-cols-1 gap-4 pr-4 lg:grid-cols-2">
+      <div class="pr-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
         <ReviewCard
           class="mr-2"
           v-for="review in title.reviews"
@@ -152,6 +158,11 @@ export default {
         currentTitle.reviews.unshift(data)
         this.$store.commit('setCurrentTitle', currentTitle)
       }
+    },
+    resetReview() {
+      this.review.heading = ""
+      this.review.comment = ""
+      this.review.rating = 0
     }
   }
 }
