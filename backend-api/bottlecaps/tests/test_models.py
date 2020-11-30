@@ -13,7 +13,7 @@ class CategoryTest(TestCase):
             synopsis='First person open world sandbox set in the year 2077',
             cover_image_path='https://i.redd.it/9e0miqiv9f331.jpg',
             featured=True,
-            user_score=9.5,
+            user_score=4.5,
             user_review_count=129,
         )
         cls.title2 = Title.objects.create(
@@ -21,9 +21,9 @@ class CategoryTest(TestCase):
             synopsis='Self explanatory, souls like game',
             cover_image_path='https://cdn-prod.scalefast.com/public/assets/user/122595/image/5243deb55a7ee9587ad2db9298e96ca5.jpg',
             featured=False,
-            user_score=9.0,
+            user_score=4,
             user_review_count=367,
-        )            
+        )        
 
     def test_if_category_has_info_fields(self):
         self.assertIsInstance(self.category.name, str)
@@ -48,9 +48,9 @@ class TitleTest(TestCase):
             synopsis='Action first person shooter',
             cover_image_path='https://images-na.ssl-images-amazon.com/images/I/81GN6gepa5L._AC_UL600_SR489,600_.jpg',
             featured=True,
-            user_score=7.2,
+            user_score=3.2,
             user_review_count=35,
-        )        
+        )     
 
     def test_if_title_has_info_fields(self):
         self.assertIsInstance(self.title.name, str)
@@ -84,13 +84,13 @@ class ReviewTest(TestCase):
             synopsis='First person open world sandbox set in the year 2077',
             cover_image_path='https://i.redd.it/9e0miqiv9f331.jpg',
             featured=True,
-            user_score=9.5,
+            user_score=4.5,
             user_review_count=129,
         )
         cls.review = Review.objects.create(
             heading='The best game ever',
             comment='This is the best game ive ever played in while',
-            rating=10.0,
+            rating=5,
             user=cls.user,
             title=cls.title
         )
@@ -98,7 +98,7 @@ class ReviewTest(TestCase):
     def test_if_review_has_info_fields(self):
         self.assertIsInstance(self.review.heading, str)
         self.assertIsInstance(self.review.comment, str)
-        self.assertIsInstance(self.review.rating, float)
+        self.assertIsInstance(self.review.rating, int)
         self.assertIsInstance(self.review.user, User)
         self.assertIsInstance(self.review.title, Title)
         self.assertIsInstance(self.review.created_at, datetime)
@@ -109,10 +109,11 @@ class ReviewTest(TestCase):
 
     def test_when_user_is_not_unique(self):
         with self.assertRaises(IntegrityError):
-            review = Review.objects.create(
-                heading='The best game ever',
-                comment='This is the best game ive ever played in while',
-                rating=10.0,
+            Review.objects.create(
+                heading='This game is trash',
+                comment='The worst game ive played in a while, buggy as fallout 76',
+                rating=1,
                 user=self.user,
                 title=self.title
             )
+            
