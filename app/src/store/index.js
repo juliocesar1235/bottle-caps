@@ -6,6 +6,7 @@ export default createStore({
   state: {
     user: {},
     isAuthenticated: localStorage.getItem('token') ? true : false,
+    categories: [],
     titles: [],
     currentTitle: {}
   },
@@ -15,6 +16,9 @@ export default createStore({
     },
     setIsAuthenticated(state, payload) {
       state.isAuthenticated = payload
+    },
+    setCategories(state, payload) {
+      state.categories = payload
     },
     setTitles(state, payload) {
       state.titles = payload
@@ -58,6 +62,23 @@ export default createStore({
         return {error: "Wrong credentials"}
       }
     },
+    async fetchCategories(state) {
+      const options = {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        },
+      }
+      const res = await fetch(`${url}/categories/`, options)
+      if(res.ok) {
+        const categories = await res.json()
+        state.commit('setCategories', categories)
+        return {}
+      } else {
+        return {error: "Something wrong happened. Please try again later!"}
+      }
+    },
     async fetchTitles(state) {
       const options = {
         mode: 'cors',
@@ -67,6 +88,25 @@ export default createStore({
         },
       }
       const res = await fetch(`${url}/titles/`, options)
+      if(res.ok) {
+        const titles = await res.json()
+        state.commit('setTitles', titles)
+        return {}
+      } else {
+        return {error: "Something wrong happened. Please try again later!"}
+      }
+    },
+    async fetchFilteredTitles(state, payload) {
+      const options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(payload)
+      }
+      const res = await fetch(`${url}/titles-filter/`, options)
       if(res.ok) {
         const titles = await res.json()
         state.commit('setTitles', titles)
@@ -114,6 +154,7 @@ export default createStore({
   getters: {
     getUser: state => state.user,
     isAuthenticated: state => state.isAuthenticated,
+    getCategories: state => state.categories,
     getTitles: state => state.titles,
     getCurrentTitle: state => state.currentTitle
   }

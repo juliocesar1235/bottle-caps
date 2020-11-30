@@ -28,11 +28,11 @@
         From: "opacity-100 translate-y-0 sm:scale-100"
         To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     -->
-    <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+    <div class="inline-block w-full overflow-hidden text-left align-bottom bg-white rounded-lg shadow-xl transition-all transform sm:my-8 sm:align-middle sm:max-w-lg" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
       <div class="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
         <div class="sm:flex sm:items-start">
-          <div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
-            <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-headline">
+          <div class="w-full mt-3 text-left sm:mt-0">
+            <h3 class="text-lg font-medium text-gray-900 leading-6" id="modal-headline">
               <slot name="header"></slot>
             </h3>
             <div class="mt-2">
