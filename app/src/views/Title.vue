@@ -27,7 +27,7 @@
     <div class="flex justify-between w-full">
       <BaseButton
         color="red"
-        flat="true"
+        :flat="true"
         @click="_ => {resetReview(); reviewing = false}">Cancel</BaseButton>
       <BaseButton
         @click="publish">Publish</BaseButton>
@@ -35,7 +35,15 @@
   </template>
 </Modal>
 <section class="px-4 mb-8 ml-auto mr-auto max-w-screen-xl">
-  <h1 class="mt-4 mb-4 text-3xl text-gray-800">{{ title.name }}</h1>
+  <div class="flex items-center justify-between">
+    <h1 class="mt-4 mb-4 text-3xl text-gray-800">{{ title.name }}</h1>
+    <div class="flex items-center">
+      <Pill
+        class="mr-2"
+        v-for="category in title.categories"
+        :key="category.id">{{ category.name }}</Pill>
+    </div>
+  </div>
   <section class="flex flex-col mb-8 md:flex-row">
     <ImageCard
       class="w-full mb-4 lg:w-1/4 md:w-1/2 md:mr-4 md:mb-0"
@@ -104,6 +112,7 @@ import BaseTextarea from '@/components/Base/BaseTextarea.vue'
 import ImageCard from '@/components/ImageCard.vue'
 import ReviewCard from '@/components/ReviewCard.vue'
 import Modal from '@/components/Modal.vue'
+import Pill from '@/components/Pill.vue'
 import StarRating from 'vue-star-rating'
 
 export default {
@@ -116,6 +125,7 @@ export default {
     BaseTextarea,
     BaseSelect,
     Modal,
+    Pill,
     StarRating
   },
   data() {
