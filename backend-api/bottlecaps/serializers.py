@@ -32,10 +32,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class TitleSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, required=False, read_only=True)
+    categories = CategorySerializer(source='category', many=True, required=False, read_only=True)
 
     class Meta:
         model = Title
-        fields = ['id', 'name', 'synopsis', 'cover_image_path', 'featured', 'user_score', 'user_review_count', 'reviews','created_at', 'last_updated_at']
+        fields = ['id', 'name', 'synopsis', 'cover_image_path', 'featured', 'user_score', 'user_review_count', 'reviews', 'categories','created_at', 'last_updated_at']
 
 
 class TitleShortSerializer(serializers.ModelSerializer):

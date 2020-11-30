@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -57,4 +58,16 @@ class Review(models.Model):
     def __str__(self):
         return f'<Review {self.id}>'
 
+def recalculate_user_score(sender, instance, created, **kwargs):
+    if created:
+        title = instance.title
+        user_review_count, user_score = calculate_user_score(title)
+        title.user_review_count = user_review_count
+        title.user_score = user_score
+        title.save()
+post_save.connect(recalculate_user_score, sender=Review)
 
+def calculate_user_score(title):
+    user_review_count = Review.objects.filter(title=title).count()
+    user_score = Review.objects.filter(title=title).aggregate(Avg('rating'))
+    return user_review_count, user_score.get('rating__avg')

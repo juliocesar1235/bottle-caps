@@ -24,6 +24,29 @@ class CreateUserView(CreateAPIView):
         return Response({'token': token.key}, status=status.HTTP_201_CREATED)
 
 
+class CategoryList(APIView):
+    """
+    Get all categories
+    """
+    def get(self, request):
+        categories = Category.objects.all()
+        serialized_categories = CategorySerializer(categories, many=True)
+        return Response(serialized_categories.data)
+
+
+class TitleFilteredList(APIView):
+    """
+    Get filtered categories
+    """
+    def post(self, request):
+        categories = request.data["categories"]
+        if not categories:
+            serialized_titles = TitleShortSerializer(Title.objects.all(), many=True)
+        else:
+            serialized_titles = TitleShortSerializer(Title.objects.filter(category__id__in=categories), many=True)
+        return Response(serialized_titles.data)
+
+
 class TitleList(APIView):
     """
     Get all titles, or create a new one

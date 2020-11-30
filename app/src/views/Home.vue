@@ -1,8 +1,8 @@
 <template>
-  <section class="max-w-screen-xl pl-4 mb-8 ml-auto mr-auto">
+  <section class="pl-4 mb-8 ml-auto mr-auto max-w-screen-xl">
     <h1 class="mb-4 text-3xl text-gray-800">Featured titles</h1>
     <section 
-      class="grid grid-flow-col grid-rows-1 gap-4 overflow-x-scroll grid-horizontal-scroll">
+      class="overflow-x-scroll grid grid-flow-col grid-rows-1 gap-4 grid-horizontal-scroll">
       <router-link
         class="contents"
         :to="{name: 'title', params: {id: title.id}}"
@@ -15,8 +15,18 @@
       </router-link>
     </section>
   </section>
-  <section class="max-w-screen-xl pl-4 ml-auto mr-auto">
+  <section class="pl-4 ml-auto mr-auto max-w-screen-xl">
     <h1 class="mb-4 text-3xl text-gray-800">All titles</h1>
+    <div class="flex mb-4">
+      <MultiSelect
+        class="mr-4"
+        v-model="selectedCategories"
+        :options="categories"
+        optionLabel="category"
+        placeholder="Select categories"
+        display="chip"/>
+      <BaseButton @click="filter">Filter</BaseButton>
+    </div>
     <section 
       class="grid grid-cols-2 gap-4 lg:grid-cols-6 md:grid-cols-4">
       <router-link 
@@ -34,19 +44,42 @@
 </template>
 
 <script>
-import ImageCard from '../components/ImageCard.vue'
+import BaseButton from '@/components/Base/BaseButton.vue'
+import ImageCard from '@/components/ImageCard.vue'
+import MultiSelect from 'primevue/multiselect';
+
 export default {
-  components: { ImageCard },
+  components: { 
+    ImageCard,
+    BaseButton,
+    MultiSelect
+  },
+  data() {
+    return {
+      selectedCategories: [],
+      featuredTitles: null
+    }
+  },
   computed: {
+    categories() {
+      return this.$store.getters.getCategories.map(category => ({category: category.name, value: category.id}))
+    },
     titles() {
       return this.$store.getters.getTitles
     },
-    featuredTitles() {
-      return this.titles.filter(title => title.featured)
+  },
+  methods: {
+    filter() {
+      let categories = this.selectedCategories.map(category => category.value)
+      this.$store.dispatch('fetchFilteredTitles', {categories})
     }
   },
   mounted() {
     this.$store.dispatch('fetchTitles')
+      .then(() => {
+        this.featuredTitles = this.$store.getters.getTitles.filter(title => title.featured)
+      })
+    this.$store.dispatch('fetchCategories')
   }
 
 }
