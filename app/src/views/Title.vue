@@ -16,11 +16,20 @@
         placeholder="This is a great game because..."
         v-model:value="review.comment"
         :rows="6"/>
-      <BaseSelect
-        class="mb-4"
-        label="Rating"
-        v-model:value="review.rating"
-        :options="options"/>
+      <div>
+        <label 
+          class="block mb-2 text-sm font-bold text-gray-700"
+          :for="id">
+          Rate
+        </label>
+        <Dropdown
+          class="mb-4"
+          scrollHeight="75px"
+          optionLabel="name"
+          v-model="review.rating"
+          placeholder="Rate it"
+          :options="options"/>
+      </div>
     </form>
   </template>
   <template v-slot:actions>
@@ -107,13 +116,13 @@
 <script>
 import BaseButton from '@/components/Base/BaseButton.vue'
 import BaseInput from '@/components/Base/BaseInput.vue'
-import BaseSelect from '@/components/Base/BaseSelect.vue'
 import BaseTextarea from '@/components/Base/BaseTextarea.vue'
 import ImageCard from '@/components/ImageCard.vue'
 import ReviewCard from '@/components/ReviewCard.vue'
 import Modal from '@/components/Modal.vue'
 import Pill from '@/components/Pill.vue'
 import StarRating from 'vue-star-rating'
+import Dropdown from 'primevue/dropdown'
 
 export default {
   name: "Title",
@@ -123,9 +132,9 @@ export default {
     BaseButton,
     BaseInput,
     BaseTextarea,
-    BaseSelect,
     Modal,
     Pill,
+    Dropdown,
     StarRating
   },
   data() {
@@ -145,9 +154,8 @@ export default {
     },
     options() {
       let o = []
-      o.push({id: 0, value: "", label: 'Rate this game'})
       for(let i = 1; i <= 5; i++) {
-        o.push({id: i, value: i, label: `${i} stars`})
+        o.push({value: i, name: `${i} stars`})
       }
       return o
     }
@@ -161,11 +169,13 @@ export default {
   },
   methods: {
     async publish() {
+      this.review.rating = this.review.rating.value
       const data = await this.$store.dispatch('postReview', this.review)
       if(!data.error) {
         this.reviewing = false
         let currentTitle = JSON.parse(JSON.stringify(this.$store.getters.getCurrentTitle))
         currentTitle.reviews.unshift(data)
+        currentTitle.reviewed = true
         this.$store.commit('setCurrentTitle', currentTitle)
       }
     },
