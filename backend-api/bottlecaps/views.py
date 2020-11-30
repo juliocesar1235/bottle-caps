@@ -29,7 +29,6 @@ class CategoryList(APIView):
     Get all categories
     """
     def get(self, request):
-        print(request.data)
         categories = Category.objects.all()
         serialized_categories = CategorySerializer(categories, many=True)
         return Response(serialized_categories.data)

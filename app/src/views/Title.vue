@@ -19,10 +19,11 @@
       <div>
         <label 
           class="block mb-2 text-sm font-bold text-gray-700"
-          :for="id">
+          for="rating">
           Rate
         </label>
         <Dropdown
+          id="rating"
           class="mb-4"
           scrollHeight="75px"
           optionLabel="name"
