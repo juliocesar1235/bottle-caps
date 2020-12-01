@@ -43,7 +43,7 @@ class TitleFilteredList(APIView):
         if not categories:
             serialized_titles = TitleShortSerializer(Title.objects.all(), many=True)
         else:
-            serialized_titles = TitleShortSerializer(Title.objects.filter(category__id__in=categories), many=True)
+            serialized_titles = TitleShortSerializer(Title.objects.filter(category__id__in=categories).distinct(), many=True)
         return Response(serialized_titles.data)
 
 
